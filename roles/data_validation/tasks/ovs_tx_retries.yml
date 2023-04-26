@@ -1,0 +1,13 @@
+- shell: ovs-vsctl get interface '{{port}}' options
+  register: temp
+
+- set_fact:
+    data: "{{temp.stdout.split(',')}}"
+
+- debug:
+    msg: "{{ data_item[1:] }}"
+  when: "'tx-retries-max' in '{{data_item}}'"
+  loop: "{{data}}"
+  loop_control:
+    loop_var: data_item
+

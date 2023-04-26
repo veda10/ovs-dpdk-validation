@@ -1,0 +1,6 @@
+- name: configured ingress policy for interface {{ interface }}
+  become: yes
+  shell: ovs-vsctl list interface {{interface}} | grep -w "ingress_policing_rate"
+  register: output
+- debug:
+    var: output.stdout_lines

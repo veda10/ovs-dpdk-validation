@@ -1,0 +1,6 @@
+- name: configured Qos/Egress policy for interface {{ interface }}
+  become: yes
+  shell: ovs-appctl -t ovs-vswitchd qos/show {{interface}}
+  register: output
+- debug:
+    var: output.stdout_lines

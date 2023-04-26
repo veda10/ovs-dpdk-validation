@@ -1,0 +1,3 @@
+---
+counters: ["ovs_tx_failure_drops", "ovs_tx_mtu_exceeded_drops", "ovs_rx_qos_drops", "ovs_tx_qos_drops", "ovs_tx_retries"]
+default-tx-retries-max: 8

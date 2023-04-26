@@ -1,0 +1,6 @@
+- name: configured MTU for interface {{ interface }}
+  become: yes
+  shell: ovs-vsctl list interface {{interface}} | grep -w "mtu"
+  register: output
+- debug:
+    var: output.stdout_lines

@@ -1,0 +1,6 @@
+- name: dataplane statistics
+  hosts: localhost
+
+  roles:
+    - data_validation
+

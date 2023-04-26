@@ -1,0 +1,15 @@
+- name: Get list of dpdk ports
+  become: true
+  shell: "ovs-appctl dpctl/show | grep {{port}}"
+  register: stats
+
+- set_fact:
+    stats: "{{stats.stdout.split(':')[2].split(',')}}"
+
+- debug:
+    msg: "{{stat}}"
+  when: "'configured_rx_queues' in '{{stat}}' or 'configured_tx_queues' in '{{stat}}'"
+  loop: "{{ stats }}"
+  loop_control:
+    loop_var: stat
+

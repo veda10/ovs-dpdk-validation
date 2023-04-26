@@ -1,0 +1,39 @@
+
+- openvswitch_db:
+    state: read
+    table: interface
+    record: '{{ item }}'
+    col: statistics
+  loop: "{{ ovs_dpdk_ports }}"
+  register: temp
+
+- name: prepare initial dictionary
+  set_fact:
+    initial: "{{ initial | default({}) | combine({ item.item : item.output })}}"
+  loop: "{{ temp.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+
+- name: print initial
+  debug:
+    var: initial
+
+- name: Sleep for 15 seconds and continue with play
+  wait_for:
+    timeout: 2
+  delegate_to: localhost
+
+- openvswitch_db:
+    state: read
+    table: interface
+    record: '{{ item }}'
+    col: statistics
+  loop: "{{ ovs_dpdk_ports }}"
+  register: temp
+
+- name: prepare final dictionary
+  set_fact:
+    final: "{{ final | default({}) | combine({ item.item : item.output })}}"
+  loop: "{{ temp.results }}"
+  loop_control:
+    label: "{{ item.item }}"
